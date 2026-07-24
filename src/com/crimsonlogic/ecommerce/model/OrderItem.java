@@ -1,26 +1,26 @@
 package com.crimsonlogic.ecommerce.model;
 
-public class CartItem {
+public class OrderItem {
 
-    private String cartItemId;
+    private String orderItemId;
     private Product product;
     private int quantity;
 
-    public CartItem() {
+    public OrderItem() {
     }
 
-    public CartItem(String cartItemId, Product product, int quantity) {
-        this.cartItemId = cartItemId;
+    public OrderItem(String orderItemId, Product product, int quantity) {
+        this.orderItemId = orderItemId;
         this.product = product;
         this.quantity = quantity;
     }
 
-    public String getCartItemId() {
-        return cartItemId;
+    public String getOrderItemId() {
+        return orderItemId;
     }
 
-    public void setCartItemId(String cartItemId) {
-        this.cartItemId = cartItemId;
+    public void setOrderItemId(String orderItemId) {
+        this.orderItemId = orderItemId;
     }
 
     public Product getProduct() {
@@ -48,8 +48,8 @@ public class CartItem {
 
     @Override
     public String toString() {
-        return "CartItem{" +
-                "cartItemId='" + cartItemId + '\'' +
+        return "OrderItem{" +
+                "orderItemId='" + orderItemId + '\'' +
                 ", product=" + product.getProductName() +
                 ", quantity=" + quantity +
                 ", subTotal=" + getSubTotal() +

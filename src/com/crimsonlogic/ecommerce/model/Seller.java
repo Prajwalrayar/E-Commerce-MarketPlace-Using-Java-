@@ -1,9 +1,11 @@
 package com.crimsonlogic.ecommerce.model;
 
+import com.crimsonlogic.ecommerce.model.abstractclass.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Seller extends User{
+public class Seller extends User {
 
     private String storeName;
     private List<Product> products;
