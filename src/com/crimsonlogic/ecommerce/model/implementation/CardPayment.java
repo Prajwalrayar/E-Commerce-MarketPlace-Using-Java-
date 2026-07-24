@@ -1,4 +1,13 @@
 package com.crimsonlogic.ecommerce.model.implementation;
 
-public class CardPayment {
+import com.crimsonlogic.ecommerce.model.Payment;
+import com.crimsonlogic.ecommerce.model.interfaces.PaymentGateway;
+
+public class CardPayment implements PaymentGateway {
+
+
+    @Override
+    public boolean processPayment() {
+        return false;
+    }
 }

@@ -1,4 +1,10 @@
 package com.crimsonlogic.ecommerce.model.implementation;
 
-public class SmsNotification {
+import com.crimsonlogic.ecommerce.model.interfaces.NotificationChannel;
+
+public class SmsNotification implements NotificationChannel {
+    @Override
+    public void sendNotification() {
+
+    }
 }
