@@ -1,4 +1,4 @@
-package com.crimsonlogic.ecommerce.model;
+package com.crimsonlogic.ecommerce.model.abstractclass;
 
 import java.util.Objects;
 
