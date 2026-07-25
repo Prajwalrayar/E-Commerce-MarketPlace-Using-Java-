@@ -6,6 +6,11 @@ import com.crimsonlogic.ecommerce.model.interfaces.PaymentGateway;
 public class UpiPayment implements PaymentGateway {
        @Override
     public boolean processPayment() {
-        return false;
-    }
+
+           System.out.println("\nProcessing payment through UPI...");
+           System.out.println("Payment Successful.");
+
+           return true;
+
+       }
 }

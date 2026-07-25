@@ -8,6 +8,9 @@ public class CardPayment implements PaymentGateway {
 
     @Override
     public boolean processPayment() {
-        return false;
+        System.out.println("\nProcessing payment through Card...");
+        System.out.println("Payment Successful.");
+
+        return true;
     }
 }
