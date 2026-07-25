@@ -4,6 +4,6 @@ import com.crimsonlogic.ecommerce.model.Payment;
 
 public interface NotificationChannel {
 
-    void sendNotification();
+    void sendNotification(String recipient, String message);
 
 }
