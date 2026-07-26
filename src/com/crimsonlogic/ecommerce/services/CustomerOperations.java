@@ -27,39 +27,72 @@ public class CustomerOperations {
             int id = sc.nextInt();
             sc.nextLine();
 
-            System.out.print("Enter Name : ");
-            String name = sc.nextLine();
-
-            System.out.print("Enter Email : ");
-            String email = sc.nextLine();
-
-            System.out.print("Enter Phone Number : ");
-            String phone = sc.nextLine();
-
-            System.out.print("Enter Address : ");
-            String address = sc.nextLine();
-
-            System.out.print("Enter Password : ");
-            String password = sc.nextLine();
-
             if (customers.containsKey(id)) {
                 throw new DuplicateDataException("Customer ID already exists.");
             }
 
-            if (!ValidationUtil.isValidName(name)) {
-                throw new IllegalArgumentException("Invalid Customer Name.");
-            }
+            String name;
+            do {
+                System.out.print("Enter Name : ");
+                name = sc.nextLine();
 
-            if (!ValidationUtil.isValidEmail(email)) {
-                throw new IllegalArgumentException("Invalid Email.");
-            }
+                if (!ValidationUtil.isValidName(name)) {
+                    System.out.println("Invalid Name! Name should contain only letters and spaces (3-30 characters).");
+                }
 
-            if (!ValidationUtil.isValidPhoneNumber(phone)) {
-                throw new IllegalArgumentException("Invalid Phone Number.");
-            }
+            } while (!ValidationUtil.isValidName(name));
 
-            Customer customer = new Customer(id, name, email, password,phone,
-                    address, LocalDate.now());
+            String email;
+            do {
+                System.out.print("Enter Email : ");
+                email = sc.nextLine();
+
+                if (!ValidationUtil.isValidEmail(email)) {
+                    System.out.println("Invalid Email! Please enter a valid email.");
+                }
+
+            } while (!ValidationUtil.isValidEmail(email));
+
+            String phone;
+            do {
+                System.out.print("Enter Phone Number : ");
+                phone = sc.nextLine();
+
+                if (!ValidationUtil.isValidPhoneNumber(phone)) {
+                    System.out.println("Invalid Phone Number! Enter a 10-digit mobile number.");
+                }
+
+            } while (!ValidationUtil.isValidPhoneNumber(phone));
+
+            System.out.print("Enter Address : ");
+            String address = sc.nextLine();
+
+            String password;
+            do {
+                System.out.print("Enter Password : ");
+                password = sc.nextLine();
+
+                if (!ValidationUtil.isValidPassword(password)) {
+                    System.out.println("Invalid Password!");
+                    System.out.println("Password must contain:");
+                    System.out.println("- 8 to 20 characters");
+                    System.out.println("- One uppercase letter");
+                    System.out.println("- One lowercase letter");
+                    System.out.println("- One digit");
+                    System.out.println("- One special character");
+                }
+
+            } while (!ValidationUtil.isValidPassword(password));
+
+            Customer customer = new Customer(
+                    id,
+                    name,
+                    email,
+                    password,
+                    phone,
+                    address,
+                    LocalDate.now()
+            );
 
             customers.put(id, customer);
 
