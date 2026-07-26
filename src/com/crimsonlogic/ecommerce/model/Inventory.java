@@ -1,15 +1,32 @@
 package com.crimsonlogic.ecommerce.model;
 
-public class Inventory {
-    private String inventoryId;
-    private Product product;
-    private int quantity;
+import java.time.LocalDate;
+import java.util.Objects;
 
-    public String getInventoryId() {
+public class Inventory {
+    private int inventoryId;
+    private Product product;
+    private int availableQuantity;
+    private int reorderLevel;
+    private LocalDate lastUpdated;
+
+    public Inventory() {
+    }
+
+    public Inventory(int inventoryId, Product product, int availableQuantity, int reorderLevel, LocalDate lastUpdated) {
+
+        this.inventoryId = inventoryId;
+        this.product = product;
+        this.availableQuantity = availableQuantity;
+        this.reorderLevel = reorderLevel;
+        this.lastUpdated = lastUpdated;
+    }
+
+    public int getInventoryId() {
         return inventoryId;
     }
 
-    public void setInventoryId(String inventoryId) {
+    public void setInventoryId(int inventoryId) {
         this.inventoryId = inventoryId;
     }
 
@@ -21,28 +38,97 @@ public class Inventory {
         this.product = product;
     }
 
-    public int getQuantity() {
-        return quantity;
+    public int getAvailableQuantity() {
+        return availableQuantity;
     }
 
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
+    public void setAvailableQuantity(int availableQuantity) {
+
+        if (availableQuantity >= 0) {
+            this.availableQuantity = availableQuantity;
+        }
     }
 
-    public Inventory() {
+    public int getReorderLevel() {
+        return reorderLevel;
     }
 
-    public Inventory(String inventoryId, Product product, int quantity) {
-        this.inventoryId = inventoryId;
-        this.product = product;
-        this.quantity = quantity;
+    public void setReorderLevel(int reorderLevel) {
+
+        if (reorderLevel >= 0) {
+            this.reorderLevel = reorderLevel;
+        }
+    }
+
+    public LocalDate getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public void setLastUpdated(LocalDate lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public void restock(int quantity) {
+
+        if (quantity > 0) {
+            availableQuantity += quantity;
+            lastUpdated = LocalDate.now();
+        }
+    }
+
+    public boolean reduceStock(int quantity) {
+
+        if (quantity > 0 && availableQuantity >= quantity) {
+
+            availableQuantity -= quantity;
+            lastUpdated = LocalDate.now();
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean isOutOfStock() {
+        return availableQuantity == 0;
+    }
+
+    public boolean isLowStock() {
+        return availableQuantity <= reorderLevel;
+    }
+
+    public String getStockStatus() {
+
+        if (availableQuantity == 0) {
+            return "OUT OF STOCK";
+        }
+
+        if (availableQuantity <= reorderLevel) {
+            return "LOW STOCK";
+        }
+
+        return "IN STOCK";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj) return true;
+
+        if (!(obj instanceof Inventory)) return false;
+
+        Inventory inventory = (Inventory) obj;
+
+        return inventoryId == inventory.inventoryId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(inventoryId);
     }
 
     @Override
     public String toString() {
-        return "Inventory{" + "inventoryId='"
-                + inventoryId + '\'' + ", product="
-                + product + ", quantity=" + quantity
-                + '}';
+
+        return "\n========== INVENTORY ==========" + "\nInventory ID      : " + inventoryId + "\nProduct           : " + (product != null ? product.getProductName() : "N/A") + "\nAvailable Quantity: " + availableQuantity + "\nReorder Level     : " + reorderLevel + "\nStock Status      : " + getStockStatus() + "\nLast Updated      : " + lastUpdated + "\n===============================";
     }
 }

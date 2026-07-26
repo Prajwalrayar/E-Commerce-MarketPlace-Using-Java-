@@ -1,26 +1,18 @@
 package com.crimsonlogic.ecommerce.model;
 
+import java.util.Objects;
+
 public class CartItem {
 
-    private String cartItemId;
     private Product product;
     private int quantity;
 
     public CartItem() {
     }
 
-    public CartItem(String cartItemId, Product product, int quantity) {
-        this.cartItemId = cartItemId;
+    public CartItem(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
-    }
-
-    public String getCartItemId() {
-        return cartItemId;
-    }
-
-    public void setCartItemId(String cartItemId) {
-        this.cartItemId = cartItemId;
     }
 
     public Product getProduct() {
@@ -36,23 +28,49 @@ public class CartItem {
     }
 
     public void setQuantity(int quantity) {
-        this.quantity = quantity;
+
+        if (quantity > 0) {
+            this.quantity = quantity;
+        }
     }
 
-    /**
-     * Calculates subtotal dynamically.
-     */
     public double getSubTotal() {
+
+        if (product == null) {
+            return 0.0;
+        }
+
         return product.getPrice() * quantity;
     }
 
     @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj)
+            return true;
+
+        if (!(obj instanceof CartItem))
+            return false;
+
+        CartItem cartItem = (CartItem) obj;
+
+        return Objects.equals(product, cartItem.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(product);
+    }
+
+    @Override
     public String toString() {
-        return "CartItem{" +
-                "cartItemId='" + cartItemId + '\'' +
-                ", product=" + product.getProductName() +
-                ", quantity=" + quantity +
-                ", subTotal=" + getSubTotal() +
-                '}';
+
+        return "\n========== CART ITEM ==========" +
+                "\nProduct ID   : " + product.getProductId() +
+                "\nProduct Name : " + product.getProductName() +
+                "\nUnit Price   : $" + product.getPrice() +
+                "\nQuantity     : " + quantity +
+                "\nSubtotal     : $" + getSubTotal() +
+                "\n===============================";
     }
 }

@@ -7,12 +7,14 @@ public class CashPayment implements PaymentGateway {
 
 
     @Override
-    public boolean processPayment() {
+    public boolean processPayment(double amount) {
 
-        System.out.println("\nCash on Delivery Selected.");
-        System.out.println("Payment will be collected at the time of delivery.");
+        System.out.println("--------------------------------");
+        System.out.println("Payment Mode : CASH");
+        System.out.println("Amount       : $" + amount);
+        System.out.println("Cash will be collected on delivery.");
+        System.out.println("--------------------------------");
 
         return true;
-
     }
 }

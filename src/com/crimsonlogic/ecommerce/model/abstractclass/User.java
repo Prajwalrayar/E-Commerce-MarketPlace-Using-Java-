@@ -1,30 +1,55 @@
 package com.crimsonlogic.ecommerce.model.abstractclass;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public abstract class User {
-    private String userId;
-    private String userName;
+    private int userId;
+    private String name;
     private String email;
-    private String mobileNumber;
+    private String password;
+    private String phoneNumber;
+    private String address;
+    private LocalDate registrationDate;
 
     public User() {
     }
 
-    public String getUserId() {
+    public User(int userId, String name, String email,
+                String phoneNumber, String address,
+                LocalDate registrationDate, String password) {
+        this.userId = userId;
+        this.name = name;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.registrationDate = registrationDate;
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getName() {
+        return name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -35,23 +60,55 @@ public abstract class User {
         this.email = email;
     }
 
-    public String getMobileNumber() {
-        return mobileNumber;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public User(String userId, String userName, String email, String mobileNumber) {
-        this.userId = userId;
-        this.userName = userName;
-        this.email = email;
-        this.mobileNumber = mobileNumber;
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public LocalDate getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(LocalDate registrationDate) {
+        this.registrationDate = registrationDate;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
+        if (!(obj instanceof User))
+            return false;
+
+        User user = (User) obj;
+
+        return userId == user.userId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId);
     }
 
     @Override
     public String toString() {
-        return "User{" + "userId='" + userId + '\'' + ", userName='" + userName + '\'' + ", email='" + email + '\'' + ", mobileNumber='" + mobileNumber + '\'' + '}';
+        return "User ID : " + userId +
+                "\nName : " + name +
+                "\nEmail : " + email +
+                "\nPhone : " + phoneNumber +
+                "\nAddress : " + address +
+                "\nRegistered On : " + registrationDate;
     }
 }
