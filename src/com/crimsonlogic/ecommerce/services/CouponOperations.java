@@ -23,21 +23,90 @@ public class CouponOperations {
 
         try {
 
-            System.out.print("Enter Coupon Code : ");
-            String couponCode = scanner.next();
+            String couponCode;
 
-            if (coupons.containsKey(couponCode)) {
-                throw new DuplicateDataException("Coupon already exists.");
+            while (true) {
+
+                System.out.print("Enter Coupon Code : ");
+                couponCode = scanner.next().trim().toUpperCase();
+
+                if (couponCode.isEmpty()) {
+                    System.out.println("Coupon Code cannot be empty.");
+                } else if (coupons.containsKey(couponCode)) {
+                    System.out.println("Coupon Code already exists. Please enter another code.");
+                } else {
+                    break;
+                }
             }
 
-            System.out.print("Enter Discount Percentage : ");
-            double discountPercentage = scanner.nextDouble();
+            double discountPercentage;
 
-            System.out.print("Enter Minimum Purchase Amount : ");
-            double minimumPurchase = scanner.nextDouble();
+            while (true) {
 
-            System.out.print("Enter Expiry Date (yyyy-mm-dd) : ");
-            LocalDate expiryDate = LocalDate.parse(scanner.next());
+                System.out.print("Enter Discount Percentage : ");
+
+                if (scanner.hasNextDouble()) {
+
+                    discountPercentage = scanner.nextDouble();
+
+                    if (discountPercentage >= 0 && discountPercentage <= 100) {
+                        break;
+                    }
+
+                    System.out.println("Discount Percentage must be between 0 and 100.");
+
+                } else {
+
+                    System.out.println("Invalid Discount Percentage! Please enter numbers only.");
+                    scanner.next();
+                }
+            }
+
+            double minimumPurchase;
+
+            while (true) {
+
+                System.out.print("Enter Minimum Purchase Amount : ");
+
+                if (scanner.hasNextDouble()) {
+
+                    minimumPurchase = scanner.nextDouble();
+
+                    if (minimumPurchase >= 0) {
+                        break;
+                    }
+
+                    System.out.println("Minimum Purchase Amount cannot be negative.");
+
+                } else {
+
+                    System.out.println("Invalid Amount! Please enter numbers only.");
+                    scanner.next();
+                }
+            }
+
+            LocalDate expiryDate;
+
+            while (true) {
+
+                System.out.print("Enter Expiry Date (yyyy-mm-dd) : ");
+                String date = scanner.next();
+
+                try {
+
+                    expiryDate = LocalDate.parse(date);
+
+                    if (expiryDate.isBefore(LocalDate.now())) {
+                        System.out.println("Expiry Date cannot be in the past.");
+                    } else {
+                        break;
+                    }
+
+                } catch (Exception e) {
+
+                    System.out.println("Invalid Date! Please use yyyy-mm-dd format.");
+                }
+            }
 
             Coupon coupon = new Coupon(
                     couponCode,
@@ -51,6 +120,7 @@ public class CouponOperations {
             System.out.println("Coupon added successfully.");
 
         } catch (Exception e) {
+
             System.out.println(e.getMessage());
         }
     }

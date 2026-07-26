@@ -23,66 +23,94 @@ public class CustomerOperations {
 
         try {
 
-            System.out.print("Enter Customer ID : ");
-            int id = sc.nextInt();
-            sc.nextLine();
+            int id;
 
-            if (customers.containsKey(id)) {
-                throw new DuplicateDataException("Customer ID already exists.");
+            while (true) {
+
+                System.out.print("Enter Customer ID : ");
+
+                if (sc.hasNextInt()) {
+
+                    id = sc.nextInt();
+                    sc.nextLine();
+
+                    if (customers.containsKey(id)) {
+                        System.out.println("Customer ID already exists. Please enter another ID.");
+                    } else {
+                        break;
+                    }
+
+                } else {
+
+                    System.out.println("Invalid Customer ID! Please enter numbers only.");
+                    sc.nextLine();
+                }
             }
 
             String name;
-            do {
+
+            while (true) {
+
                 System.out.print("Enter Name : ");
                 name = sc.nextLine();
 
-                if (!ValidationUtil.isValidName(name)) {
-                    System.out.println("Invalid Name! Name should contain only letters and spaces (3-30 characters).");
+                if (ValidationUtil.isValidName(name)) {
+                    break;
                 }
 
-            } while (!ValidationUtil.isValidName(name));
+                System.out.println("Invalid Name! Name should contain only letters and spaces (3-30 characters).");
+            }
 
             String email;
-            do {
+
+            while (true) {
+
                 System.out.print("Enter Email : ");
                 email = sc.nextLine();
 
-                if (!ValidationUtil.isValidEmail(email)) {
-                    System.out.println("Invalid Email! Please enter a valid email.");
+                if (ValidationUtil.isValidEmail(email)) {
+                    break;
                 }
 
-            } while (!ValidationUtil.isValidEmail(email));
+                System.out.println("Invalid Email! Please enter a valid email.");
+            }
 
             String phone;
-            do {
+
+            while (true) {
+
                 System.out.print("Enter Phone Number : ");
                 phone = sc.nextLine();
 
-                if (!ValidationUtil.isValidPhoneNumber(phone)) {
-                    System.out.println("Invalid Phone Number! Enter a 10-digit mobile number.");
+                if (ValidationUtil.isValidPhoneNumber(phone)) {
+                    break;
                 }
 
-            } while (!ValidationUtil.isValidPhoneNumber(phone));
+                System.out.println("Invalid Phone Number! Enter a 10-digit mobile number.");
+            }
 
             System.out.print("Enter Address : ");
             String address = sc.nextLine();
 
             String password;
-            do {
+
+            while (true) {
+
                 System.out.print("Enter Password : ");
                 password = sc.nextLine();
 
-                if (!ValidationUtil.isValidPassword(password)) {
-                    System.out.println("Invalid Password!");
-                    System.out.println("Password must contain:");
-                    System.out.println("- 8 to 20 characters");
-                    System.out.println("- One uppercase letter");
-                    System.out.println("- One lowercase letter");
-                    System.out.println("- One digit");
-                    System.out.println("- One special character");
+                if (ValidationUtil.isValidPassword(password)) {
+                    break;
                 }
 
-            } while (!ValidationUtil.isValidPassword(password));
+                System.out.println("Invalid Password!");
+                System.out.println("Password must contain:");
+                System.out.println("- 8 to 20 characters");
+                System.out.println("- One uppercase letter");
+                System.out.println("- One lowercase letter");
+                System.out.println("- One digit");
+                System.out.println("- One special character");
+            }
 
             Customer customer = new Customer(
                     id,

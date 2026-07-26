@@ -15,8 +15,7 @@ public class Wishlist {
         products = new ArrayList<>();
     }
 
-    public Wishlist(int wishlistId, Customer customer) {
-        this.wishlistId = wishlistId;
+    public Wishlist(Customer customer) {
         this.customer = customer;
         this.products = new ArrayList<>();
     }

@@ -27,30 +27,93 @@ public class InventoryOperations {
 
         try {
 
-            System.out.print("Enter Inventory ID : ");
-            int inventoryId = scanner.nextInt();
+            int inventoryId;
 
-            if (inventories.containsKey(inventoryId)) {
-                throw new DuplicateDataException("Inventory ID already exists.");
+            while (true) {
+
+                System.out.print("Enter Inventory ID : ");
+
+                if (scanner.hasNextInt()) {
+
+                    inventoryId = scanner.nextInt();
+
+                    if (inventories.containsKey(inventoryId)) {
+                        System.out.println("Inventory ID already exists. Please enter another ID.");
+                    } else {
+                        break;
+                    }
+
+                } else {
+                    System.out.println("Invalid Inventory ID! Please enter numbers only.");
+                    scanner.nextLine();
+                }
             }
 
-            System.out.print("Enter Product ID : ");
-            int productId = scanner.nextInt();
+            Product product;
 
-            Product product = productOperations.findProductById(productId);
+            while (true) {
 
-            System.out.print("Enter Available Quantity : ");
-            int availableQuantity = scanner.nextInt();
+                System.out.print("Enter Product ID : ");
 
-            if (availableQuantity < 0) {
-                throw new InvalidQuantityException("Available quantity cannot be negative.");
+                if (scanner.hasNextInt()) {
+
+                    int productId = scanner.nextInt();
+
+                    try {
+                        product = productOperations.findProductById(productId);
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Invalid Product ID! Please enter a valid Product ID.");
+                    }
+
+                } else {
+                    System.out.println("Invalid Product ID! Please enter numbers only.");
+                    scanner.nextLine();
+                }
             }
 
-            System.out.print("Enter Reorder Level : ");
-            int reorderLevel = scanner.nextInt();
+            int availableQuantity;
 
-            if (reorderLevel < 0) {
-                throw new InvalidQuantityException("Reorder level cannot be negative.");
+            while (true) {
+
+                System.out.print("Enter Available Quantity : ");
+
+                if (scanner.hasNextInt()) {
+
+                    availableQuantity = scanner.nextInt();
+
+                    if (availableQuantity >= 0) {
+                        break;
+                    }
+
+                    System.out.println("Available Quantity cannot be negative.");
+
+                } else {
+                    System.out.println("Invalid Quantity! Please enter numbers only.");
+                    scanner.nextLine();
+                }
+            }
+
+            int reorderLevel;
+
+            while (true) {
+
+                System.out.print("Enter Reorder Level : ");
+
+                if (scanner.hasNextInt()) {
+
+                    reorderLevel = scanner.nextInt();
+
+                    if (reorderLevel >= 0) {
+                        break;
+                    }
+
+                    System.out.println("Reorder Level cannot be negative.");
+
+                } else {
+                    System.out.println("Invalid Reorder Level! Please enter numbers only.");
+                    scanner.nextLine();
+                }
             }
 
             Inventory inventory = new Inventory(

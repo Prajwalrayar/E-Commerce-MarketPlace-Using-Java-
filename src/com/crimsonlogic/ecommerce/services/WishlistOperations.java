@@ -23,17 +23,53 @@ public class WishlistOperations {
 
         try {
 
-            System.out.print("Enter Customer ID : ");
-            int customerId = scanner.nextInt();
+            Customer customer;
 
-            Customer customer =
-                    customerOperations.findCustomerById(customerId);
+            while (true) {
 
-            System.out.print("Enter Product ID : ");
-            int productId = scanner.nextInt();
+                System.out.print("Enter Customer ID : ");
 
-            Product product =
-                    productOperations.findProductById(productId);
+                if (scanner.hasNextInt()) {
+
+                    int customerId = scanner.nextInt();
+
+                    try {
+                        customer = customerOperations.findCustomerById(customerId);
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Invalid Customer ID! Please enter a valid Customer ID.");
+                    }
+
+                } else {
+
+                    System.out.println("Invalid Customer ID! Please enter numbers only.");
+                    scanner.nextLine();
+                }
+            }
+
+            Product product;
+
+            while (true) {
+
+                System.out.print("Enter Product ID : ");
+
+                if (scanner.hasNextInt()) {
+
+                    int productId = scanner.nextInt();
+
+                    try {
+                        product = productOperations.findProductById(productId);
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Invalid Product ID! Please enter a valid Product ID.");
+                    }
+
+                } else {
+
+                    System.out.println("Invalid Product ID! Please enter numbers only.");
+                    scanner.nextLine();
+                }
+            }
 
             customer.getWishlist().addProduct(product);
 

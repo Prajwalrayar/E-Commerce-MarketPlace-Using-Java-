@@ -26,27 +26,81 @@ public class CartOperations {
 
         try {
 
-            System.out.print("Enter Customer ID : ");
-            int customerId = scanner.nextInt();
+            Customer customer;
 
-            Customer customer =
-                    customerOperations.findCustomerById(customerId);
+            while (true) {
 
-            System.out.print("Enter Product ID : ");
-            int productId = scanner.nextInt();
+                System.out.print("Enter Customer ID : ");
 
-            Product product =
-                    productOperations.findProductById(productId);
+                if (scanner.hasNextInt()) {
 
-            System.out.print("Enter Quantity : ");
-            int quantity = scanner.nextInt();
+                    int customerId = scanner.nextInt();
 
-            if (quantity <= 0) {
-                throw new InvalidQuantityException("Invalid Quantity.");
+                    try {
+                        customer = customerOperations.findCustomerById(customerId);
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Invalid Customer ID! Please enter a valid Customer ID.");
+                    }
+
+                } else {
+
+                    System.out.println("Invalid Customer ID! Please enter numbers only.");
+                    scanner.nextLine();
+                }
             }
 
-            if (product.getQuantity() < quantity) {
-                throw new OutOfStockException("Product is out of stock.");
+            Product product;
+
+            while (true) {
+
+                System.out.print("Enter Product ID : ");
+
+                if (scanner.hasNextInt()) {
+
+                    int productId = scanner.nextInt();
+
+                    try {
+                        product = productOperations.findProductById(productId);
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Invalid Product ID! Please enter a valid Product ID.");
+                    }
+
+                } else {
+
+                    System.out.println("Invalid Product ID! Please enter numbers only.");
+                    scanner.nextLine();
+                }
+            }
+
+            int quantity;
+
+            while (true) {
+
+                System.out.print("Enter Quantity : ");
+
+                if (scanner.hasNextInt()) {
+
+                    quantity = scanner.nextInt();
+
+                    if (quantity <= 0) {
+                        System.out.println("Quantity must be greater than zero.");
+                        continue;
+                    }
+
+                    if (product.getQuantity() < quantity) {
+                        System.out.println("Product is out of stock or insufficient quantity available.");
+                        continue;
+                    }
+
+                    break;
+
+                } else {
+
+                    System.out.println("Invalid Quantity! Please enter numbers only.");
+                    scanner.nextLine();
+                }
             }
 
             customer.getCart().addProduct(product, quantity);
@@ -54,6 +108,7 @@ public class CartOperations {
             System.out.println("Product added to cart successfully.");
 
         } catch (Exception e) {
+
             System.out.println(e.getMessage());
         }
     }

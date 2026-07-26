@@ -46,16 +46,38 @@ public class ShipmentOperations {
 
         try {
 
-            System.out.print("Enter Order ID : ");
-            int orderId = scanner.nextInt();
-            scanner.nextLine();
+            Order order;
 
-            Order order = orderOperations.findOrderById(orderId);
+            while (true) {
 
-            if (order.getShipment() != null) {
+                System.out.print("Enter Order ID : ");
 
-                System.out.println("Shipment already exists.");
-                return;
+                if (scanner.hasNextInt()) {
+
+                    int orderId = scanner.nextInt();
+                    scanner.nextLine();
+
+                    try {
+
+                        order = orderOperations.findOrderById(orderId);
+
+                        if (order.getShipment() != null) {
+                            System.out.println("Shipment already exists for this order.");
+                            return;
+                        }
+
+                        break;
+
+                    } catch (OrderNotFoundException e) {
+
+                        System.out.println("Invalid Order ID! Please enter a valid Order ID.");
+                    }
+
+                } else {
+
+                    System.out.println("Invalid Order ID! Please enter numbers only.");
+                    scanner.nextLine();
+                }
             }
 
             System.out.print("Enter Shipping Address : ");
@@ -83,18 +105,13 @@ public class ShipmentOperations {
             shipment.setShipmentStatus(ShipmentStatus.PENDING);
 
             shipments.add(shipment);
-
             order.setShipment(shipment);
 
             System.out.println("Shipment created successfully.");
 
-        } catch (OrderNotFoundException e) {
-
-            System.out.println(e.getMessage());
-
         } catch (Exception e) {
 
-            System.out.println("Invalid Input.");
+            System.out.println(e.getMessage());
         }
     }
 

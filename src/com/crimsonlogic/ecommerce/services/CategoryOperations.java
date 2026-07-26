@@ -25,23 +25,45 @@ public class CategoryOperations {
 
         try {
 
-            System.out.print("Enter Category ID : ");
-            int id = scanner.nextInt();
-            scanner.nextLine();
+            int id;
 
-            System.out.print("Enter Category Name : ");
-            String categoryName = scanner.nextLine();
+            while (true) {
+
+                System.out.print("Enter Category ID : ");
+
+                if (scanner.hasNextInt()) {
+
+                    id = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (categories.containsKey(id)) {
+                        System.out.println("Category ID already exists. Please enter another ID.");
+                    } else {
+                        break;
+                    }
+
+                } else {
+                    System.out.println("Invalid Category ID! Please enter numbers only.");
+                    scanner.nextLine();
+                }
+            }
+
+            String categoryName;
+
+            while (true) {
+
+                System.out.print("Enter Category Name : ");
+                categoryName = scanner.nextLine();
+
+                if (ValidationUtil.isValidName(categoryName)) {
+                    break;
+                }
+
+                System.out.println("Invalid Category Name! Please enter a valid category name.");
+            }
 
             System.out.print("Enter Description : ");
             String description = scanner.nextLine();
-
-            if (categories.containsKey(id)) {
-                throw new DuplicateDataException("Category ID already exists.");
-            }
-
-            if (!ValidationUtil.isValidName(categoryName)) {
-                throw new IllegalArgumentException("Invalid Category Name.");
-            }
 
             Category category = new Category(
                     id,

@@ -26,43 +26,83 @@ public class SellerOperations {
 
         try {
 
-            System.out.print("Enter Seller ID : ");
-            int id = scanner.nextInt();
-            scanner.nextLine();
+            int id;
 
-            System.out.print("Enter Name : ");
-            String name = scanner.nextLine();
+            while (true) {
+                System.out.print("Enter Seller ID : ");
 
-            System.out.print("Enter Email : ");
-            String email = scanner.nextLine();
+                if (scanner.hasNextInt()) {
+                    id = scanner.nextInt();
+                    scanner.nextLine();
 
-            System.out.print("Enter Phone Number : ");
-            String phone = scanner.nextLine();
+                    if (sellers.containsKey(id)) {
+                        System.out.println("Seller ID already exists. Please enter another ID.");
+                    } else {
+                        break;
+                    }
+                } else {
+                    System.out.println("Invalid Seller ID! Please enter numbers only.");
+                    scanner.nextLine();
+                }
+            }
+
+            String name;
+
+            while (true) {
+                System.out.print("Enter Name : ");
+                name = scanner.nextLine();
+
+                if (ValidationUtil.isValidName(name)) {
+                    break;
+                }
+
+                System.out.println("Invalid Name! Please enter a valid name.");
+            }
+
+            String email;
+
+            while (true) {
+                System.out.print("Enter Email : ");
+                email = scanner.nextLine();
+
+                if (ValidationUtil.isValidEmail(email)) {
+                    break;
+                }
+
+                System.out.println("Invalid Email! Please enter a valid email.");
+            }
+
+            String phone;
+
+            while (true) {
+                System.out.print("Enter Phone Number : ");
+                phone = scanner.nextLine();
+
+                if (ValidationUtil.isValidPhoneNumber(phone)) {
+                    break;
+                }
+
+                System.out.println("Invalid Phone Number! Please enter a valid phone number.");
+            }
 
             System.out.print("Enter Address : ");
             String address = scanner.nextLine();
 
-            System.out.print("Enter Password : ");
-            String password = scanner.nextLine();
+            String password;
+
+            while (true) {
+                System.out.print("Enter Password : ");
+                password = scanner.nextLine();
+
+                if (ValidationUtil.isValidPassword(password)) {
+                    break;
+                }
+
+                System.out.println("Invalid Password! Please enter a valid password.");
+            }
 
             System.out.print("Enter Company Name : ");
             String companyName = scanner.nextLine();
-
-            if (sellers.containsKey(id)) {
-                throw new DuplicateDataException("Seller ID already exists.");
-            }
-
-            if (!ValidationUtil.isValidName(name)) {
-                throw new IllegalArgumentException("Invalid Seller Name.");
-            }
-
-            if (!ValidationUtil.isValidEmail(email)) {
-                throw new IllegalArgumentException("Invalid Email.");
-            }
-
-            if (!ValidationUtil.isValidPhoneNumber(phone)) {
-                throw new IllegalArgumentException("Invalid Phone Number.");
-            }
 
             Seller seller = new Seller(
                     id,
@@ -72,7 +112,8 @@ public class SellerOperations {
                     phone,
                     address,
                     LocalDate.now(),
-                    companyName);
+                    companyName
+            );
 
             sellers.put(id, seller);
 

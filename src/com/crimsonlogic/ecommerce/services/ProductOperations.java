@@ -35,19 +35,38 @@ public class ProductOperations {
 
         try {
 
-            System.out.print("Enter Product ID : ");
-            int productId = scanner.nextInt();
-            scanner.nextLine();
+            int productId;
 
-            if (products.containsKey(productId)) {
-                throw new DuplicateDataException("Product ID already exists.");
+            while (true) {
+                System.out.print("Enter Product ID : ");
+
+                if (scanner.hasNextInt()) {
+                    productId = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if (products.containsKey(productId)) {
+                        System.out.println("Product ID already exists. Please enter another ID.");
+                    } else {
+                        break;
+                    }
+
+                } else {
+                    System.out.println("Invalid Product ID! Please enter a number.");
+                    scanner.nextLine();
+                }
             }
 
-            System.out.print("Enter Product Name : ");
-            String productName = scanner.nextLine();
+            String productName;
 
-            if (!ValidationUtil.isValidName(productName)) {
-                throw new IllegalArgumentException("Invalid Product Name.");
+            while (true) {
+                System.out.print("Enter Product Name : ");
+                productName = scanner.nextLine();
+
+                if (ValidationUtil.isValidName(productName)) {
+                    break;
+                }
+
+                System.out.println("Invalid Product Name! Please enter a valid product name.");
             }
 
             System.out.print("Enter Brand : ");
@@ -56,31 +75,104 @@ public class ProductOperations {
             System.out.print("Enter Description : ");
             String description = scanner.nextLine();
 
-            System.out.print("Enter Price : ");
-            double price = scanner.nextDouble();
+            double price;
 
-            if (!ValidationUtil.isValidPrice(price)) {
-                throw new IllegalArgumentException("Invalid Product Price.");
+            while (true) {
+                System.out.print("Enter Price : ");
+
+                if (scanner.hasNextDouble()) {
+                    price = scanner.nextDouble();
+
+                    if (ValidationUtil.isValidPrice(price)) {
+                        break;
+                    }
+
+                    System.out.println("Invalid Price! Please enter a valid price.");
+                } else {
+                    System.out.println("Invalid Price! Please enter a numeric value.");
+                    scanner.next();
+                }
             }
 
-            System.out.print("Enter Quantity : ");
-            int quantity = scanner.nextInt();
+            int quantity;
 
-            if (!ValidationUtil.isValidQuantity(quantity)) {
-                throw new IllegalArgumentException("Invalid Product Quantity.");
+            while (true) {
+                System.out.print("Enter Quantity : ");
+
+                if (scanner.hasNextInt()) {
+                    quantity = scanner.nextInt();
+
+                    if (ValidationUtil.isValidQuantity(quantity)) {
+                        break;
+                    }
+
+                    System.out.println("Invalid Quantity! Please enter a valid quantity.");
+                } else {
+                    System.out.println("Invalid Quantity! Please enter a whole number.");
+                    scanner.next();
+                }
             }
 
-            System.out.print("Enter Rating : ");
-            double rating = scanner.nextDouble();
+            double rating;
 
-            System.out.print("Enter Category ID : ");
-            int categoryId = scanner.nextInt();
+            while (true) {
+                System.out.print("Enter Rating : ");
 
-            System.out.print("Enter Seller ID : ");
-            int sellerId = scanner.nextInt();
+                if (scanner.hasNextDouble()) {
+                    rating = scanner.nextDouble();
 
-            Category category = categoryOperations.findCategoryById(categoryId);
-            Seller seller = sellerOperations.findSellerById(sellerId);
+                    if (ValidationUtil.isValidRating(rating)) {
+                        break;
+                    }
+
+                    System.out.println("Invalid Rating! Rating must be between 1 and 5.");
+                } else {
+                    System.out.println("Invalid Rating! Please enter a numeric value.");
+                    scanner.next();
+                }
+            }
+
+            Category category;
+
+            while (true) {
+                System.out.print("Enter Category ID : ");
+
+                if (scanner.hasNextInt()) {
+                    int categoryId = scanner.nextInt();
+
+                    try {
+                        category = categoryOperations.findCategoryById(categoryId);
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Invalid Category ID! Please enter a valid Category ID.");
+                    }
+
+                } else {
+                    System.out.println("Invalid Category ID! Please enter a number.");
+                    scanner.next();
+                }
+            }
+
+            Seller seller;
+
+            while (true) {
+                System.out.print("Enter Seller ID : ");
+
+                if (scanner.hasNextInt()) {
+                    int sellerId = scanner.nextInt();
+
+                    try {
+                        seller = sellerOperations.findSellerById(sellerId);
+                        break;
+                    } catch (Exception e) {
+                        System.out.println("Invalid Seller ID! Please enter a valid Seller ID.");
+                    }
+
+                } else {
+                    System.out.println("Invalid Seller ID! Please enter a number.");
+                    scanner.next();
+                }
+            }
 
             Product product = new Product(
                     productId,
@@ -97,7 +189,7 @@ public class ProductOperations {
 
             products.put(productId, product);
 
-            System.out.println("Product added successfully.");
+            System.out.println("\nProduct added successfully.");
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

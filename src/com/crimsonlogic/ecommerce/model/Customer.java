@@ -19,7 +19,7 @@ public class Customer extends User {
     public Customer() {
         this.orderHistory = new ArrayList<>();
         this.cart = new Cart();
-        this.wishlist = new Wishlist();
+        this.wishlist = new Wishlist(this);
     }
 
     public Wishlist getWishlist() {
