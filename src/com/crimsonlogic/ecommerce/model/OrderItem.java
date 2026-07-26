@@ -1,26 +1,20 @@
 package com.crimsonlogic.ecommerce.model;
 
+import java.util.Objects;
+
 public class OrderItem {
 
-    private String orderItemId;
     private Product product;
     private int quantity;
+    private double unitPrice;
 
     public OrderItem() {
     }
 
-    public OrderItem(String orderItemId, Product product, int quantity) {
-        this.orderItemId = orderItemId;
+    public OrderItem(Product product, int quantity) {
         this.product = product;
         this.quantity = quantity;
-    }
-
-    public String getOrderItemId() {
-        return orderItemId;
-    }
-
-    public void setOrderItemId(String orderItemId) {
-        this.orderItemId = orderItemId;
+        this.unitPrice = product.getPrice();
     }
 
     public Product getProduct() {
@@ -29,6 +23,10 @@ public class OrderItem {
 
     public void setProduct(Product product) {
         this.product = product;
+
+        if (product != null) {
+            this.unitPrice = product.getPrice();
+        }
     }
 
     public int getQuantity() {
@@ -36,23 +34,55 @@ public class OrderItem {
     }
 
     public void setQuantity(int quantity) {
-        this.quantity = quantity;
+
+        if (quantity > 0) {
+            this.quantity = quantity;
+        }
     }
 
-    /**
-     * Calculates subtotal dynamically.
-     */
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(double unitPrice) {
+
+        if (unitPrice >= 0) {
+            this.unitPrice = unitPrice;
+        }
+    }
+
     public double getSubTotal() {
-        return product.getPrice() * quantity;
+        return unitPrice * quantity;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj)
+            return true;
+
+        if (!(obj instanceof OrderItem))
+            return false;
+
+        OrderItem other = (OrderItem) obj;
+
+        return Objects.equals(product, other.product);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(product);
     }
 
     @Override
     public String toString() {
-        return "OrderItem{" +
-                "orderItemId='" + orderItemId + '\'' +
-                ", product=" + product.getProductName() +
-                ", quantity=" + quantity +
-                ", subTotal=" + getSubTotal() +
-                '}';
+
+        return "\n========== ORDER ITEM ==========" +
+                "\nProduct ID   : " + product.getProductId() +
+                "\nProduct Name : " + product.getProductName() +
+                "\nQuantity     : " + quantity +
+                "\nUnit Price   : $" + unitPrice +
+                "\nSubtotal     : $" + getSubTotal() +
+                "\n===============================";
     }
 }
