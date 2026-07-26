@@ -151,16 +151,33 @@ public class PaymentOperations {
 
         try {
 
-            System.out.print("Enter Payment ID : ");
-            int paymentId = scanner.nextInt();
+            int paymentId;
+
+            while (true) {
+
+                System.out.print("Enter Payment ID : ");
+
+                if (scanner.hasNextInt()) {
+                    paymentId = scanner.nextInt();
+                    scanner.nextLine();
+                    break;
+                } else {
+                    System.out.println("Invalid Payment ID! Please enter numbers only.");
+                    scanner.nextLine();
+                }
+            }
 
             Payment payment = findPaymentById(paymentId);
 
             System.out.println(payment);
 
-        } catch (Exception e) {
+        } catch (PaymentNotFoundException e) {
 
             System.out.println(e.getMessage());
+
+        } catch (Exception e) {
+
+            System.out.println("Something went wrong.");
         }
     }
 

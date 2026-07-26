@@ -48,7 +48,7 @@ public class Customer extends User {
 
         this.orderHistory = new ArrayList<>();
         this.cart = new Cart();
-        this.wishlist = new Wishlist();
+        this.wishlist = new Wishlist(this);
     }
 
     public double getWalletBalance() {
