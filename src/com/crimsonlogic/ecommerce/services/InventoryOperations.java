@@ -1,20 +1,16 @@
 package com.crimsonlogic.ecommerce.services;
 
-import com.crimsonlogic.ecommerce.exceptions.DuplicateDataException;
 import com.crimsonlogic.ecommerce.exceptions.InvalidQuantityException;
 import com.crimsonlogic.ecommerce.exceptions.InventoryNotFoundException;
 import com.crimsonlogic.ecommerce.model.Inventory;
 import com.crimsonlogic.ecommerce.model.Product;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class InventoryOperations {
-
     Map<Integer, Inventory> inventories;
-
     private ProductOperations productOperations;
     private Scanner scanner = new Scanner(System.in);
     public InventoryOperations(ProductOperations productOperations) {
@@ -293,7 +289,7 @@ public class InventoryOperations {
         List<Inventory> lowStockInventories = inventories.values()
                 .stream()
                 .filter(Inventory::isLowStock)
-                .collect(Collectors.toList());
+                .toList();
 
         if (lowStockInventories.isEmpty()) {
             System.out.println("No low stock inventories found.");
@@ -303,6 +299,16 @@ public class InventoryOperations {
         System.out.println("\n========== LOW STOCK INVENTORIES ==========");
 
         lowStockInventories.forEach(System.out::println);
+    }
+
+    public void lowStockInventoryCount() {
+
+        long count = inventories.values()
+                .stream()
+                .filter(Inventory::isLowStock)
+                .count();
+
+        System.out.println("Low Stock Inventories : " + count);
     }
 
 
@@ -324,9 +330,36 @@ public class InventoryOperations {
         outOfStockInventories.forEach(System.out::println);
     }
 
+    public void outOfStockInventoryCount() {
+
+        long count = inventories.values()
+                .stream()
+                .filter(Inventory::isOutOfStock)
+                .count();
+
+        System.out.println("Out Of Stock Inventories : " + count);
+    }
+
+    public void displayInventoriesUpdatedToday() {
+
+        List<Inventory> inventoryList = inventories.values()
+                .stream()
+                .filter(inventory ->
+                        inventory.getLastUpdated().equals(LocalDate.now()))
+                .toList();
+
+        if (inventoryList.isEmpty()) {
+            System.out.println("No inventories updated today.");
+            return;
+        }
+
+        System.out.println("\n========== INVENTORIES UPDATED TODAY ==========");
+
+        inventoryList.forEach(System.out::println);
+    }
+
     // Find Inventory By Product ID
-    public Inventory findInventoryByProductId(int productId)
-            throws InventoryNotFoundException {
+    public Inventory findInventoryByProductId(int productId) throws InventoryNotFoundException {
 
         for (Inventory inventory : inventories.values()) {
 
@@ -358,6 +391,28 @@ public class InventoryOperations {
         inventory.restock(quantity);
     }
 
+
+    public void totalAvailableQuantity() {
+
+        int totalQuantity = inventories.values()
+                .stream()
+                .mapToInt(Inventory::getAvailableQuantity)
+                .sum();
+
+        System.out.println("Total Available Quantity : " + totalQuantity);
+    }
+
+    public void totalInventoryValue() {
+
+        double totalValue = inventories.values()
+                .stream()
+                .mapToDouble(inventory ->
+                        inventory.getProduct().getPrice()
+                                * inventory.getAvailableQuantity())
+                .sum();
+
+        System.out.println("Total Inventory Value : $" + totalValue);
+    }
     // Inventory Exists
     public boolean inventoryExists(int inventoryId) {
         return inventories.containsKey(inventoryId);

@@ -1,117 +1,55 @@
 package com.crimsonlogic.ecommerce.helper;
 
 import java.util.Scanner;
-
-import com.crimsonlogic.ecommerce.model.interfaces.PaymentGateway;
 import com.crimsonlogic.ecommerce.services.*;
 
 public class MenuHandler {
+    private final Scanner scanner = new Scanner(System.in);
 
-    private Scanner scanner = new Scanner(System.in);
-
-    // Operations
-    private CustomerOperations customerOperations = new CustomerOperations();
-    private SellerOperations sellerOperations = new SellerOperations();
-    private CategoryOperations categoryOperations = new CategoryOperations();
-
-    private ProductOperations productOperations =
-            new ProductOperations(categoryOperations, sellerOperations);
-
-    private InventoryOperations inventoryOperations =
-            new InventoryOperations(productOperations);
-
-    private CouponOperations couponOperations =
-            new CouponOperations();
-
-    private CartOperations cartOperations =
-            new CartOperations(customerOperations, productOperations);
-
-    private WishlistOperations wishlistOperations =
-            new WishlistOperations(customerOperations, productOperations);
-
-    private OrderOperations orderOperations =
-            new OrderOperations(
-                    customerOperations,
-                    cartOperations,
-                    productOperations,
-                    inventoryOperations,
-                    couponOperations);
-
-    private PaymentGateway paymentGateway = new PaymentGateway() {
-        @Override
-        public boolean processPayment(double amount) {
-            return true;
-        }
-    };
-
-    private PaymentOperations paymentOperations =
-            new PaymentOperations(orderOperations, paymentGateway);
-
-    private ShipmentOperations shipmentOperations =
-            new ShipmentOperations(orderOperations);
-
-    private ReviewOperations reviewOperations =
-            new ReviewOperations(customerOperations, productOperations);
-
-    private ReportOperations reportOperations =
-            new ReportOperations(
-                    customerOperations,
-                    sellerOperations,
-                    productOperations,
-                    inventoryOperations,
-                    orderOperations);
-
-    private AdminOperations adminOperations =
-            new AdminOperations(
-                    customerOperations,
-                    sellerOperations,
-                    productOperations,
-                    inventoryOperations,
-                    orderOperations,
-                    reportOperations);
+    // Centralized Operations
+    private final ApplicationOperations applicationOperations = new ApplicationOperations();
 
     // Handlers
-    private CustomerHandler customerHandler =
-            new CustomerHandler(
-                    customerOperations,
-                    cartOperations,
-                    wishlistOperations
-            );
-
-    private SellerHandler sellerHandler =
-            new SellerHandler(sellerOperations);
-
-    private CategoryHandler categoryHandler =
-            new CategoryHandler(categoryOperations);
-
-    private ProductHandler productHandler =
-            new ProductHandler(productOperations);
-
-    private InventoryHandler inventoryHandler =
-            new InventoryHandler(inventoryOperations);
-
-    private CouponHandler couponHandler =
-            new CouponHandler(couponOperations);
-
-    private OrderHandler orderHandler =
-            new OrderHandler(orderOperations);
-
-    private PaymentHandler paymentHandler =
-            new PaymentHandler(paymentOperations);
-
-    private ShipmentHandler shipmentHandler =
-            new ShipmentHandler(shipmentOperations);
-
-    private ReviewHandler reviewHandler =
-            new ReviewHandler(reviewOperations);
-
-    private ReportHandler reportHandler =
-            new ReportHandler(reportOperations);
-
-    private AdminHandler adminHandler =
-            new AdminHandler(adminOperations);
+    private final CustomerHandler customerHandler;
+    private final SellerHandler sellerHandler;
+    private final CategoryHandler categoryHandler;
+    private final ProductHandler productHandler;
+    private final InventoryHandler inventoryHandler;
+    private final CouponHandler couponHandler;
+    private final OrderHandler orderHandler;
+    private final PaymentHandler paymentHandler;
+    private final ShipmentHandler shipmentHandler;
+    private final ReviewHandler reviewHandler;
+    private final ReportHandler reportHandler;
+    private final AdminHandler adminHandler;
 
     public MenuHandler() {
+
+        customerHandler = new CustomerHandler(applicationOperations.getCustomerOperations(),
+                applicationOperations.getCartOperations(),
+                applicationOperations.getWishlistOperations());
+
+        sellerHandler = new SellerHandler(applicationOperations.getSellerOperations());
+
+        categoryHandler = new CategoryHandler(applicationOperations.getCategoryOperations());
+
+        productHandler = new ProductHandler(applicationOperations.getProductOperations());
+
+        inventoryHandler = new InventoryHandler(applicationOperations.getInventoryOperations());
+
+        couponHandler = new CouponHandler(applicationOperations.getCouponOperations());
+
+        orderHandler = new OrderHandler(applicationOperations.getOrderOperations());
+
+        paymentHandler = new PaymentHandler(applicationOperations.getPaymentOperations());
+
+        shipmentHandler = new ShipmentHandler(applicationOperations.getShipmentOperations());
+
+        reviewHandler = new ReviewHandler(applicationOperations.getReviewOperations());
+
+        reportHandler = new ReportHandler(applicationOperations.getReportOperations());
+
+        adminHandler = new AdminHandler(applicationOperations.getAdminOperations());
     }
 
     public void marketPlaceMenu() {
@@ -143,60 +81,20 @@ public class MenuHandler {
 
             switch (choice) {
 
-                case 1:
-                    customerHandler.customerMenu();
-                    break;
-
-                case 2:
-                    sellerHandler.sellerMenu();
-                    break;
-
-                case 3:
-                    categoryHandler.categoryMenu();
-                    break;
-
-                case 4:
-                    productHandler.productHandlerMethod();
-                    break;
-
-                case 5:
-                    inventoryHandler.inventoryMenu();
-                    break;
-
-                case 6:
-                    couponHandler.couponMenu();
-                    break;
-
-                case 7:
-                    orderHandler.orderMenu();
-                    break;
-
-                case 8:
-                    paymentHandler.paymentMenu();
-                    break;
-
-                case 9:
-                    shipmentHandler.shipmentMenu();
-                    break;
-
-                case 10:
-                    reviewHandler.reviewMenu();
-                    break;
-
-                case 11:
-                    reportHandler.reportMenu();
-                    break;
-
-                case 12:
-                    adminHandler.adminMenu();
-                    break;
-
-                case 0:
-                    System.out.println("Thank you for using E-Commerce Marketplace.");
-                    break;
-
-                default:
-                    System.out.println("Invalid Choice!");
+                case 1 -> customerHandler.customerMenu();
+                case 2 -> sellerHandler.sellerMenu();
+                case 3 -> categoryHandler.categoryMenu();
+                case 4 -> productHandler.productHandlerMethod();
+                case 5 -> inventoryHandler.inventoryMenu();
+                case 6 -> couponHandler.couponMenu();
+                case 7 -> orderHandler.orderMenu();
+                case 8 -> paymentHandler.paymentMenu();
+                case 9 -> shipmentHandler.shipmentMenu();
+                case 10 -> reviewHandler.reviewMenu();
+                case 11 -> reportHandler.reportMenu();
+                case 12 -> adminHandler.adminMenu();
+                case 0 -> System.out.println("Thank you for using E-Commerce Marketplace.");
+                default -> System.out.println("Invalid Choice!");
             }
 
         } while (choice != 0);

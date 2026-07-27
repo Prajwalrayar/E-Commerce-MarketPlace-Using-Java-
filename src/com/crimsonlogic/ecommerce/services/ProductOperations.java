@@ -22,8 +22,7 @@ public class ProductOperations {
     private SellerOperations sellerOperations;
     private Scanner scanner = new Scanner(System.in);
 
-    public ProductOperations(CategoryOperations categoryOperations,
-                             SellerOperations sellerOperations) {
+    public ProductOperations(CategoryOperations categoryOperations, SellerOperations sellerOperations) {
 
         this.products = new HashMap<>();
         this.categoryOperations = categoryOperations;
@@ -343,12 +342,24 @@ public class ProductOperations {
         products.values().forEach(System.out::println);
     }
 
-    public void displayProductsByCategory() {
+    // Display Available Products
+    public void listAvailableProducts() {
+        List<Product> productList = products.values()
+                .stream()
+                .filter(Product::isAvailable)
+                .toList();
+
+        if (productList.isEmpty()) {
+            System.out.println("No products available.");
+            return;
+        }
+        productList.forEach(System.out::println);
+    }
+
+    public void filterProductsByCategory() {
 
         try {
-
             scanner.nextLine();
-
             System.out.print("Enter Category Name : ");
             String categoryName = scanner.nextLine();
 
@@ -371,29 +382,18 @@ public class ProductOperations {
         }
     }
 
-    public void displayProductsBySeller() {
+    public void filterProductsBySeller() {
 
-        try {
+        System.out.print("Enter Seller Name : ");
+        scanner.nextLine();
+        String sellerName = scanner.nextLine();
 
-            System.out.print("Enter Seller ID : ");
-            int sellerId = scanner.nextInt();
-
-            List<Product> productList = products.values()
-                    .stream()
-                    .filter(product ->
-                            product.getSeller().getUserId() == sellerId)
-                    .toList();
-
-            if (productList.isEmpty()) {
-                System.out.println("No products found.");
-                return;
-            }
-
-            productList.forEach(System.out::println);
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
+        products.values()
+                .stream()
+                .filter(product ->
+                        product.getSeller().getName()
+                                .equalsIgnoreCase(sellerName))
+                .forEach(System.out::println);
     }
 
     // Sort Products By Price
@@ -432,6 +432,55 @@ public class ProductOperations {
                 .forEach(System.out::println);
     }
 
+    public void sortProductsByPriceDescending() {
+
+        if (products.isEmpty()) {
+            System.out.println("No products available.");
+            return;
+        }
+
+        System.out.println("\n========== PRODUCTS SORTED BY PRICE (DESCENDING) ==========");
+
+        products.values()
+                .stream()
+                .sorted(new ProductPriceComparator().reversed())
+                .forEach(System.out::println);
+    }
+
+    public void mostExpensiveProduct() {
+
+        products.values().stream()
+                .max(new ProductPriceComparator())
+                .ifPresentOrElse(System.out::println,
+                        () -> System.out.println("No products available.")
+                );
+    }
+
+    public void cheapestProduct() {
+
+        products.values()
+                .stream()
+                .min(new ProductPriceComparator())
+                .ifPresentOrElse(
+                        System.out::println,
+                        () -> System.out.println("No products available.")
+                );
+    }
+
+    public void averageProductPrice() {
+
+        OptionalDouble averagePrice = products.values()
+                .stream()
+                .mapToDouble(Product::getPrice)
+                .average();
+
+        if (averagePrice.isPresent()) {
+            System.out.println("Average Product Price : " + averagePrice.getAsDouble());
+        } else {
+            System.out.println("No products available.");
+        }
+    }
+
     // Sort Products By Rating
     public void sortProductsByRating() {
 
@@ -439,29 +488,15 @@ public class ProductOperations {
             System.out.println("No products available.");
             return;
         }
-
+        System.out.println("\n========== PRODUCTS SORTED BY RATING ==========");
         products.values()
                 .stream()
                 .sorted(new ProductRatingComparator())
                 .forEach(System.out::println);
     }
-    // Display Available Products
-    public void displayAvailableProducts() {
 
-        List<Product> productList = products.values()
-                .stream()
-                .filter(Product::isAvailable)
-                .toList();
 
-        if (productList.isEmpty()) {
-            System.out.println("No products available.");
-            return;
-        }
-
-        productList.forEach(System.out::println);
-    }
-    public Product findProductById(int productId)
-            throws ProductNotFoundException {
+    public Product findProductById(int productId) throws ProductNotFoundException {
 
         Product product = products.get(productId);
 
@@ -472,10 +507,106 @@ public class ProductOperations {
         return product;
     }
     // Product Exists
-    public boolean productExists(int productId) {
-        return products.containsKey(productId);
+    public void availableProductsCount() {
+
+        long count = products.values()
+                .stream()
+                .filter(Product::isAvailable)
+                .count();
+
+        System.out.println("Available Products : " + count);
     }
 
+    public void displayProductsAbovePrice() {
+
+        System.out.print("Enter Price : ");
+        double price = scanner.nextDouble();
+
+        List<Product> productList = products.values()
+                .stream()
+                .filter(product -> product.getPrice() > price)
+                .toList();
+
+        if (productList.isEmpty()) {
+            System.out.println("No products found.");
+            return;
+        }
+
+        productList.forEach(System.out::println);
+    }
+
+    public void displayProductsBelowPrice() {
+
+        System.out.print("Enter Price : ");
+        double price = scanner.nextDouble();
+
+        List<Product> productList = products.values()
+                .stream()
+                .filter(product -> product.getPrice() < price)
+                .toList();
+
+        if (productList.isEmpty()) {
+            System.out.println("No products found.");
+            return;
+        }
+
+        System.out.println("\n========== PRODUCTS BELOW PRICE ==========");
+
+        productList.forEach(System.out::println);
+    }
+
+    public void displayProductsWithinPriceRange() {
+
+        System.out.print("Enter Minimum Price : ");
+        double minPrice = scanner.nextDouble();
+
+        System.out.print("Enter Maximum Price : ");
+        double maxPrice = scanner.nextDouble();
+
+        List<Product> productList = products.values()
+                .stream()
+                .filter(product ->
+                        product.getPrice() >= minPrice && product.getPrice() <= maxPrice)
+                .toList();
+
+        if (productList.isEmpty()) {
+            System.out.println("No products found.");
+            return;
+        }
+
+        System.out.println("\n========== PRODUCTS WITHIN PRICE RANGE ==========");
+
+        productList.forEach(System.out::println);
+    }
+    public void displayProductsByCategory() {
+
+        System.out.print("Enter Category : ");
+        String category = scanner.nextLine();
+
+        List<Product> productList = products.values()
+                .stream()
+                .filter(product ->
+                        product.getCategory().getCategoryName()
+                                .equalsIgnoreCase(category))
+                .toList();
+
+        if (productList.isEmpty()) {
+            System.out.println("No products found.");
+            return;
+        }
+
+        productList.forEach(System.out::println);
+    }
+
+    public void totalProductValue() {
+
+        double totalValue = products.values()
+                .stream()
+                .mapToDouble(Product::getPrice)
+                .sum();
+
+        System.out.println("Total Value Of All Products : $" + totalValue);
+    }
     // Total Products
     public int getProductCount() {
         return products.size();

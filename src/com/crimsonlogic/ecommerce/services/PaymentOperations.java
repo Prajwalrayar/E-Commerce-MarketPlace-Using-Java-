@@ -16,35 +16,24 @@ import com.crimsonlogic.ecommerce.model.interfaces.PaymentGateway;
 public class PaymentOperations {
 
     private List<Payment> payments;
-
     private OrderOperations orderOperations;
     private PaymentGateway paymentGateway;
+   Scanner scanner = new Scanner(System.in);;
 
-    private Scanner scanner;
-
-    public PaymentOperations(OrderOperations orderOperations,
-                             PaymentGateway paymentGateway) {
-
+    public PaymentOperations(OrderOperations orderOperations, PaymentGateway paymentGateway) {
         this.payments = new ArrayList<>();
-
         this.orderOperations = orderOperations;
         this.paymentGateway = paymentGateway;
-
-        this.scanner = new Scanner(System.in);
     }
 
     // Generate Payment ID
     private int generatePaymentId() {
-
         int maxId = 0;
-
         for (Payment payment : payments) {
-
             if (payment.getPaymentId() > maxId) {
                 maxId = payment.getPaymentId();
             }
         }
-
         return maxId + 1;
     }
 

@@ -37,6 +37,9 @@ public class CustomerHandler {
             System.out.println("5. Display All Customers");
             System.out.println("6. Cart Menu");
             System.out.println("7. Wishlist Menu");
+            System.out.println("8. Customers with Orders");
+            System.out.println("9. Total number of Customers");
+            System.out.println("10. Customers Without Orders");
             System.out.println("0. Back");
             System.out.print("Enter Your Choice : ");
 
@@ -70,6 +73,18 @@ public class CustomerHandler {
 
                 case 7:
                     wishlistMenu();
+                    break;
+
+                case 8:
+                    customerOperations.customersWithOrders();
+                    break;
+
+                case 9:
+                    customerOperations.getCustomerCount();
+                    break;
+
+                case 10:
+                    customerOperations.displayCustomersWithoutOrders();
                     break;
 
                 case 0:

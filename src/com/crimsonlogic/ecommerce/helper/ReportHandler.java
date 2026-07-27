@@ -27,6 +27,10 @@ public class ReportHandler {
             System.out.println("3. Product Report");
             System.out.println("4. Inventory Report");
             System.out.println("5. Order Report");
+            System.out.println("6. Top 5 Best Selling Products");
+            System.out.println("7. Total Revenue");
+            System.out.println("8. Group Orders By Status");
+            System.out.println("9. Count Orders By Status");
             System.out.println("0. Back");
             System.out.println("=================================");
             System.out.print("Enter Choice : ");
@@ -53,6 +57,22 @@ public class ReportHandler {
 
                 case 5:
                     reportOperations.orderReport();
+                    break;
+
+                case 6:
+                    reportOperations.topFiveBestSellingProducts();
+                    break;
+
+                case 7:
+                    reportOperations.totalMarketplaceRevenue();
+                    break;
+
+                case 8:
+                    reportOperations.groupOrdersByStatus();
+                    break;
+
+                case 9:
+                    reportOperations.countOrdersByStatus();
                     break;
 
                 case 0:

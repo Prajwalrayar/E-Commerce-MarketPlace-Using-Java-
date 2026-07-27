@@ -29,6 +29,11 @@ public class InventoryHandler {
             System.out.println("8. Display Low Stock Inventories");
             System.out.println("9. Display Out of Stock Inventories");
             System.out.println("10. Total Inventory Count");
+            System.out.println("11. Total Inventory Value");
+            System.out.println("12. Low Stock Inventory Count");
+            System.out.println("13. Out Of Stock Inventory Count");
+            System.out.println("14. Display Inventories Updated Today");
+            System.out.println("15. Total Available Quantity");
             System.out.println("0. Back");
             System.out.print("Enter your choice : ");
 
@@ -73,8 +78,27 @@ public class InventoryHandler {
                     break;
 
                 case 10:
-                    System.out.println("Total Inventories : "
-                            + inventoryOperations.getInventoryCount());
+                    System.out.println("Total Inventories : " + inventoryOperations.getInventoryCount());
+                    break;
+
+                case 11:
+                    inventoryOperations.totalInventoryValue();
+                    break;
+
+                case 12:
+                    inventoryOperations.lowStockInventoryCount();
+                    break;
+
+                case 13:
+                    inventoryOperations.outOfStockInventoryCount();
+                    break;
+
+                case 14:
+                    inventoryOperations.displayInventoriesUpdatedToday();
+                    break;
+
+                case 15:
+                    inventoryOperations.totalAvailableQuantity();
                     break;
 
                 case 0:

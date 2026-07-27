@@ -20,61 +20,41 @@ public class CustomerOperations {
 
     // Add Customer
     public void addCustomer() {
-
         try {
-
             int id;
-
             while (true) {
-
                 System.out.print("Enter Customer ID : ");
-
                 if (sc.hasNextInt()) {
-
                     id = sc.nextInt();
                     sc.nextLine();
-
                     if (customers.containsKey(id)) {
                         System.out.println("Customer ID already exists. Please enter another ID.");
                     } else {
                         break;
                     }
-
                 } else {
-
                     System.out.println("Invalid Customer ID! Please enter numbers only.");
                     sc.nextLine();
                 }
             }
-
             String name;
-
             while (true) {
-
                 System.out.print("Enter Name : ");
                 name = sc.nextLine();
-
                 if (ValidationUtil.isValidName(name)) {
                     break;
                 }
-
                 System.out.println("Invalid Name! Name should contain only letters and spaces (3-30 characters).");
             }
-
             String email;
-
             while (true) {
-
                 System.out.print("Enter Email : ");
                 email = sc.nextLine();
-
                 if (ValidationUtil.isValidEmail(email)) {
                     break;
                 }
-
                 System.out.println("Invalid Email! Please enter a valid email.");
             }
-
             String phone;
 
             while (true) {
@@ -246,14 +226,48 @@ public class CustomerOperations {
 
         return customer;
     }
+
+    public void customersWithOrders() {
+
+        customers.values()
+                .stream()
+                .filter(customer -> !customer.getOrderHistory().isEmpty())
+                .forEach(System.out::println);
+    }
     // Check Customer Exists
     public boolean customerExists(int customerId) {
         return customers.containsKey(customerId);
     }
 
+    public void totalCustomers() {
+
+        long total = customers.values()
+                .stream()
+                .count();
+
+        System.out.println("Total Customers : " + total);
+    }
+
     // Total Customers
     public int getCustomerCount() {
         return customers.size();
+    }
+
+    public void displayCustomersWithoutOrders() {
+
+        List<Customer> customersWithoutOrders = customers.values()
+                .stream()
+                .filter(customer -> customer.getOrderHistory().isEmpty())
+                .toList();
+
+        if (customersWithoutOrders.isEmpty()) {
+            System.out.println("Every customer has placed at least one order.");
+            return;
+        }
+
+        System.out.println("\n========== CUSTOMERS WITHOUT ORDERS ==========");
+
+        customersWithoutOrders.forEach(System.out::println);
     }
 
     // Return All Customers
