@@ -23,26 +23,13 @@ public class SellerOperations {
 
         try {
 
+            Random random = new Random();
+
+            // Generate Unique Seller ID
             int id;
-
-            while (true) {
-                System.out.print("Enter Seller ID : ");
-
-                if (scanner.hasNextInt()) {
-                    id = scanner.nextInt();
-                    scanner.nextLine();
-
-                    if (sellers.containsKey(id)) {
-                        System.out.println("Seller ID already exists. Please enter another ID.");
-                    } else {
-                        break;
-                    }
-                } else {
-                    System.out.println("Invalid Seller ID! Please enter numbers only.");
-                    scanner.nextLine();
-                }
-            }
-
+            do {
+                id = 1000 + random.nextInt(500);
+            } while (sellers.containsKey(id));
             String name;
 
             while (true) {
@@ -95,7 +82,13 @@ public class SellerOperations {
                     break;
                 }
 
-                System.out.println("Invalid Password! Please enter a valid password.");
+                System.out.println("Invalid Password!");
+                System.out.println("Password must contain:");
+                System.out.println("- 8 to 20 characters");
+                System.out.println("- One uppercase letter");
+                System.out.println("- One lowercase letter");
+                System.out.println("- One digit");
+                System.out.println("- One special character");
             }
 
             System.out.print("Enter Company Name : ");
@@ -114,7 +107,9 @@ public class SellerOperations {
 
             sellers.put(id, seller);
 
-            System.out.println("Seller registered successfully.");
+            System.out.println("\n======================================");
+            System.out.println("Seller Registered Successfully!");
+            System.out.println("Seller ID : " + "S" + id);
 
         } catch (Exception e) {
             System.out.println(e.getMessage());

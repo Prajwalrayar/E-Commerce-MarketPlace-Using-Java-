@@ -21,44 +21,41 @@ public class CustomerOperations {
     // Add Customer
     public void addCustomer() {
         try {
+
+            Random random = new Random();
+
+            // Generate Unique Customer ID
             int id;
-            while (true) {
-                System.out.print("Enter Customer ID : ");
-                if (sc.hasNextInt()) {
-                    id = sc.nextInt();
-                    sc.nextLine();
-                    if (customers.containsKey(id)) {
-                        System.out.println("Customer ID already exists. Please enter another ID.");
-                    } else {
-                        break;
-                    }
-                } else {
-                    System.out.println("Invalid Customer ID! Please enter numbers only.");
-                    sc.nextLine();
-                }
-            }
+            do {
+                id = 100 + random.nextInt(1000);
+            } while (customers.containsKey(id));
+
             String name;
             while (true) {
                 System.out.print("Enter Name : ");
                 name = sc.nextLine();
+
                 if (ValidationUtil.isValidName(name)) {
                     break;
                 }
+
                 System.out.println("Invalid Name! Name should contain only letters and spaces (3-30 characters).");
             }
+
             String email;
             while (true) {
                 System.out.print("Enter Email : ");
                 email = sc.nextLine();
+
                 if (ValidationUtil.isValidEmail(email)) {
                     break;
                 }
+
                 System.out.println("Invalid Email! Please enter a valid email.");
             }
+
             String phone;
-
             while (true) {
-
                 System.out.print("Enter Phone Number : ");
                 phone = sc.nextLine();
 
@@ -73,9 +70,7 @@ public class CustomerOperations {
             String address = sc.nextLine();
 
             String password;
-
             while (true) {
-
                 System.out.print("Enter Password : ");
                 password = sc.nextLine();
 
@@ -104,7 +99,10 @@ public class CustomerOperations {
 
             customers.put(id, customer);
 
-            System.out.println("Customer registered successfully.");
+            System.out.println("\n======================================");
+            System.out.println("Customer Registered Successfully!");
+            System.out.println("Customer ID : " + id);
+            System.out.println("======================================");
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
