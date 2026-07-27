@@ -35,9 +35,6 @@ public class ReportOperations {
         scanner = new Scanner(System.in);
     }
 
-    public ReportOperations() {
-
-    }
 
     public void customerReport() {
 

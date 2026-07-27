@@ -47,9 +47,10 @@ public class ApplicationOperations {
 
         shipmentOperations = new ShipmentOperations(orderOperations);
 
-        reviewOperations = new ReviewOperations();
+        reviewOperations = new ReviewOperations(customerOperations, productOperations);
 
-        reportOperations = new ReportOperations();
+        reportOperations = new ReportOperations(customerOperations, sellerOperations,
+                            productOperations, inventoryOperations, orderOperations);
 
         adminOperations = new AdminOperations(customerOperations, sellerOperations,
                 productOperations, inventoryOperations, orderOperations, reportOperations);
