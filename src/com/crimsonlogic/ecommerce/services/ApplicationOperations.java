@@ -2,54 +2,34 @@ package com.crimsonlogic.ecommerce.services;
 
 import com.crimsonlogic.ecommerce.model.interfaces.PaymentGateway;
 
-public class MarketPlaceOperations {
+public class ApplicationOperations {
+    private final CustomerOperations customerOperations;
+    private final SellerOperations sellerOperations;
+    private final CategoryOperations categoryOperations;
+    private final ProductOperations productOperations;
+    private final InventoryOperations inventoryOperations;
+    private final CartOperations cartOperations;
+    private final WishlistOperations wishlistOperations;
+    private final CouponOperations couponOperations;
+    private final OrderOperations orderOperations;
+    private final PaymentOperations paymentOperations;
+    private final ShipmentOperations shipmentOperations;
+    private final ReviewOperations reviewOperations;
+    private final ReportOperations reportOperations;
+    private final AdminOperations adminOperations;
 
-    private CustomerOperations customerOperations;
-    private SellerOperations sellerOperations;
-    private CategoryOperations categoryOperations;
-    private ProductOperations productOperations;
-    private InventoryOperations inventoryOperations;
-    private CartOperations cartOperations;
-    private WishlistOperations wishlistOperations;
-    private CouponOperations couponOperations;
-    private OrderOperations orderOperations;
-    private PaymentOperations paymentOperations;
-    private ShipmentOperations shipmentOperations;
-    private ReviewOperations reviewOperations;
-    private ReportOperations reportOperations;
-    private AdminOperations adminOperations;
-
-    public MarketPlaceOperations() {
+    public ApplicationOperations() {
 
         customerOperations = new CustomerOperations();
-
         sellerOperations = new SellerOperations();
-
         categoryOperations = new CategoryOperations();
-
-        productOperations = new ProductOperations(
-                categoryOperations,
-                sellerOperations);
-
-        inventoryOperations = new InventoryOperations(
-                productOperations);
-
-        cartOperations = new CartOperations(
-                customerOperations,
-                productOperations);
-
-        wishlistOperations = new WishlistOperations(
-                customerOperations,
-                productOperations);
-
+        productOperations = new ProductOperations(categoryOperations, sellerOperations);
+        inventoryOperations = new InventoryOperations(productOperations);
+        cartOperations = new CartOperations(customerOperations, productOperations);
+        wishlistOperations = new WishlistOperations(customerOperations, productOperations);
         couponOperations = new CouponOperations();
-
-        orderOperations = new OrderOperations(
-                customerOperations,
-                cartOperations,
-                productOperations,
-                inventoryOperations,
-                couponOperations);
+        orderOperations = new OrderOperations(customerOperations, cartOperations,
+                productOperations, inventoryOperations, couponOperations);
 
         // Dummy Payment Gateway
         PaymentGateway paymentGateway = new PaymentGateway() {
@@ -57,31 +37,22 @@ public class MarketPlaceOperations {
             @Override
             public boolean processPayment(double amount) {
 
-                System.out.println("Processing Payment : $" + amount);
+                System.out.println("Processing Payment : RS." + amount);
 
                 return true;
             }
         };
 
-        paymentOperations = new PaymentOperations(
-                orderOperations,
-                paymentGateway);
+        paymentOperations = new PaymentOperations(orderOperations, paymentGateway);
 
-        shipmentOperations = new ShipmentOperations(
-                orderOperations);
+        shipmentOperations = new ShipmentOperations(orderOperations);
 
         reviewOperations = new ReviewOperations();
 
         reportOperations = new ReportOperations();
 
-        adminOperations = new AdminOperations(
-                customerOperations,
-                sellerOperations,
-                productOperations,
-                inventoryOperations,
-                orderOperations,
-                reportOperations
-        );
+        adminOperations = new AdminOperations(customerOperations, sellerOperations,
+                productOperations, inventoryOperations, orderOperations, reportOperations);
     }
 
     public AdminOperations getAdminOperations() {
