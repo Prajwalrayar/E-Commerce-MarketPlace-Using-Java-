@@ -21,12 +21,9 @@ public class ReviewOperations {
         reviews = new ArrayList<>();
         this.customerOperations = customerOperations;
         this.productOperations = productOperations;
-        scanner = new Scanner(System.in);
+        this.scanner = new Scanner(System.in);
     }
 
-    public ReviewOperations() {
-
-    }
 
     private int generateReviewId() {
         return reviews.size() + 1;
