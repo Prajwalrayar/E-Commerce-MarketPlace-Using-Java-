@@ -33,6 +33,10 @@ public class OrderHandler {
             System.out.println("9. Deliver Order");
             System.out.println("10. Cancel Order");
             System.out.println("11. Total Orders");
+            System.out.println("12. Total Pending Orders");
+            System.out.println("13. Display Delivered Orders");
+            System.out.println("14. Display Cancelled Orders");
+            System.out.println("15. Display Confirmed Orders");
             System.out.println("0. Back");
 
             System.out.print("Enter your choice : ");
@@ -82,6 +86,22 @@ public class OrderHandler {
 
                 case 11:
                     orderOperations.getOrderCount();
+                    break;
+
+                case 12:
+                    orderOperations.pendingOrdersCount();
+                    break;
+
+                case 13:
+                    orderOperations.displayDeliveredOrders();
+                    break;
+
+                case 14:
+                    orderOperations.displayCancelledOrders();
+                    break;
+
+                case 15:
+                    orderOperations.displayConfirmedOrders();
                     break;
 
                 case 0:

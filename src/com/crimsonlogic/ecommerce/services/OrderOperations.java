@@ -47,50 +47,34 @@ public class OrderOperations {
             }
         }
 
-        return maxId + 1;
+        return maxId + 1000;
     }
 
     // Place Order
     public void placeOrder() {
-
         try {
-
             System.out.print("Enter Customer ID : ");
             int customerId = scanner.nextInt();
-
             Customer customer = customerOperations.findCustomerById(customerId);
-
             Cart cart = customer.getCart();
-
             if (cart.isEmpty()) {
-
                 System.out.println("Cart is empty.");
                 return;
             }
-
             Order order = new Order(generateOrderId(), customer);
             order.setOrderStatus(OrderStatus.PENDING);
-
             for (CartItem cartItem : cart.getCartItems()) {
-
                 Product product = cartItem.getProduct();
                 int quantity = cartItem.getQuantity();
-
-                Inventory inventory =
-                        inventoryOperations.findInventoryByProductId(product.getProductId());
-
+                Inventory inventory = inventoryOperations.findInventoryByProductId(product.getProductId());
                 if (inventory == null) {
-
                     System.out.println("Inventory not found.");
                     return;
                 }
-
                 if (inventory.getAvailableQuantity() < quantity) {
-
                     System.out.println(product.getProductName() + " is out of stock.");
                     return;
                 }
-
                 inventoryOperations.reduceStock(product.getProductId(), quantity);
 
                 OrderItem orderItem = new OrderItem(product, quantity);
@@ -354,6 +338,15 @@ public class OrderOperations {
         }
     }
 
+    public void pendingOrdersCount() {
+
+        long count = orders.stream()
+                .filter(order -> order.getOrderStatus() == OrderStatus.PENDING)
+                .count();
+
+        System.out.println("Pending Orders : " + count);
+    }
+
     public Order findOrderById(int orderId)
             throws OrderNotFoundException {
 
@@ -366,9 +359,64 @@ public class OrderOperations {
 
         throw new OrderNotFoundException("Order not found.");
     }
+
+    public void displayDeliveredOrders() {
+
+        List<Order> deliveredOrders = orders.stream()
+                .filter(order -> order.getOrderStatus() == OrderStatus.DELIVERED)
+                .toList();
+
+        if (deliveredOrders.isEmpty()) {
+            System.out.println("No delivered orders found.");
+            return;
+        }
+
+        System.out.println("\n========== DELIVERED ORDERS ==========");
+
+        deliveredOrders.forEach(System.out::println);
+    }
+
+    public void displayCancelledOrders() {
+
+        List<Order> cancelledOrders = orders.stream()
+                .filter(order -> order.getOrderStatus() == OrderStatus.CANCELLED)
+                .toList();
+
+        if (cancelledOrders.isEmpty()) {
+            System.out.println("No cancelled orders found.");
+            return;
+        }
+
+        System.out.println("\n========== CANCELLED ORDERS ==========");
+
+        cancelledOrders.forEach(System.out::println);
+    }
+
+    public void displayConfirmedOrders() {
+
+        List<Order> confirmedOrders = orders.stream()
+                .filter(order ->
+                        order.getOrderStatus() == OrderStatus.CONFIRMED)
+                .toList();
+
+        if (confirmedOrders.isEmpty()) {
+            System.out.println("No confirmed orders found.");
+            return;
+        }
+
+        System.out.println("\n========== CONFIRMED ORDERS ==========");
+
+        confirmedOrders.forEach(System.out::println);
+    }
+
     // Total Orders
     public void getOrderCount() {
 
         System.out.println("Total Orders : " + orders.size());
+    }
+
+    // Return All Orders
+    public List<Order> getAllOrders() {
+        return new ArrayList<>(orders);
     }
 }

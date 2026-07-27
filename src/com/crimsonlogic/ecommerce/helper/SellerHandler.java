@@ -26,6 +26,7 @@ public class SellerHandler {
             System.out.println("3. Update Seller");
             System.out.println("4. Delete Seller");
             System.out.println("5. Display All Sellers");
+            System.out.println("6. Display Sellers With Products");
             System.out.println("0. Back");
             System.out.print("Enter Your Choice : ");
 
@@ -51,6 +52,10 @@ public class SellerHandler {
 
                 case 5:
                     sellerOperations.displayAllSellers();
+                    break;
+
+                case 6:
+                    sellerOperations.displaySellersWithProducts();
                     break;
 
                 case 0:

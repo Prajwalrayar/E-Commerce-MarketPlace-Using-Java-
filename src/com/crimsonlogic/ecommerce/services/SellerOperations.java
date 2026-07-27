@@ -6,10 +6,7 @@ import com.crimsonlogic.ecommerce.model.Seller;
 import com.crimsonlogic.ecommerce.util.ValidationUtil;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class SellerOperations {
 
@@ -238,6 +235,23 @@ public class SellerOperations {
         }
 
         return seller;
+    }
+
+    public void displaySellersWithProducts() {
+
+        List<Seller> sellersWithProducts = sellers.values()
+                .stream()
+                .filter(seller -> !seller.getProducts().isEmpty())
+                .toList();
+
+        if (sellersWithProducts.isEmpty()) {
+            System.out.println("No sellers have listed products.");
+            return;
+        }
+
+        System.out.println("\n========== SELLERS WITH PRODUCTS ==========");
+
+        sellersWithProducts.forEach(System.out::println);
     }
 
     // Check Seller Exists
